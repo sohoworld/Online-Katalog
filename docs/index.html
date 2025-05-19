@@ -34,8 +34,8 @@
     .stock-btn {
       padding: 8px 16px;
       border: none;
-      background: #888;
-      color: white;
+      background: #010603;
+      color: rgb(244, 244, 244);
       border-radius: 20px;
       cursor: pointer;
       font-size: 0.9rem;
@@ -279,7 +279,7 @@
           ['Fiyat', `${product.fiyat}`],
           ['Koli & Paket', product.paket_turu],
           ['İç Adet', product.ic_adet],
-          ['Stok Adet', product.adet]
+          ['Stok', product.adet]
         ].forEach(([label, value]) => {
           const p = document.createElement('p');
           p.innerHTML = `<strong>${label}:</strong> ${value}`;
