@@ -43,25 +43,51 @@
     .stock-btn.active {
       background: #4caf50;
     }
-    #categories {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 1rem;
+
+    /* Yeni dropdown yapısı */
+    .dropdown {
+      position: relative;
+      display: inline-block;
       margin-bottom: 2rem;
     }
-    .category-btn {
-      padding: 8px 16px;
-      border: none;
-      background: #444;
+    .category-main-btn {
+      padding: 10px 20px;
+      background-color: #e91e63;
       color: white;
+      border: none;
       border-radius: 20px;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-weight: bold;
     }
-    .category-btn:hover, .category-btn.active {
-      background: #e91e63;
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      z-index: 1000;
+      background-color: white;
+      border: 1px solid #ccc;
+      padding: 1rem;
+      width: 700px;
+      max-height: 500px;
+      overflow-y: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      top: 110%;
+      left: 0;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem 1rem;
     }
+    .dropdown.show .dropdown-content {
+      display: grid;
+    }
+    .dropdown-content button {
+      background: #444;
+      color: white;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
     .catalog {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -116,7 +142,10 @@
       <button class="stock-btn" id="outOfStockBtn">Tükenenler</button>
     </div>
   </header>
-  <div id="categories"></div>
+  <div class="dropdown" id="categoryDropdown">
+    <button id="categoryToggle" class="category-main-btn">Tüm Kategoriler</button>
+    <div id="categoryList" class="dropdown-content"></div>
+  </div>
   <section id="catalog" class="catalog"></section>
   <div id="pagination"></div>
   <div class="modal" id="imageModal">
@@ -131,6 +160,10 @@
     const productsPerPage = 60;
     let modalImages = [], modalCurrent = 0;
     let stockFilter = 'all';
+
+    document.getElementById('categoryToggle').addEventListener('click', () => {
+      document.getElementById('categoryDropdown').classList.toggle('show');
+    });
 
     function openModal(index) {
       modalCurrent = index;
@@ -151,6 +184,24 @@
         const entry = {};
         headers.forEach((h, i) => entry[h] = values[i]?.trim() || '');
         return entry;
+      });
+    }
+
+    function renderCategories() {
+      const categories = ['Tümü', ...new Set(allProducts.map(p => p.kategori).filter(Boolean))];
+      const container = document.getElementById('categoryList');
+      container.innerHTML = '';
+      categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'category-btn';
+        if (cat === selectedCategory) btn.classList.add('active');
+        btn.textContent = cat;
+        btn.onclick = () => {
+          selectedCategory = cat;
+          filterAndRender();
+          document.getElementById('categoryDropdown').classList.remove('show');
+        };
+        container.appendChild(btn);
       });
     }
 
@@ -205,24 +256,6 @@
       sliderContainer.appendChild(thumbs);
 
       return sliderContainer;
-    }
-
-    function renderCategories() {
-      const categories = ['Tümü', ...new Set(allProducts.map(p => p.kategori).filter(Boolean))];
-      const catDiv = document.getElementById('categories');
-      catDiv.innerHTML = '';
-      categories.forEach(cat => {
-        const btn = document.createElement('button');
-        btn.className = 'category-btn';
-        if (cat === selectedCategory) btn.classList.add('active');
-        btn.textContent = cat;
-        btn.onclick = () => {
-          selectedCategory = cat;
-          renderCategories();
-          filterAndRender();
-        };
-        catDiv.appendChild(btn);
-      });
     }
 
     function renderCatalog(products) {
@@ -294,7 +327,6 @@
       document.getElementById('outOfStockBtn').classList.remove('active');
       filterAndRender();
     });
-
     document.getElementById('outOfStockBtn').addEventListener('click', () => {
       stockFilter = stockFilter === 'out' ? 'all' : 'out';
       document.getElementById('outOfStockBtn').classList.toggle('active', stockFilter === 'out');
@@ -309,6 +341,13 @@
         filteredProducts = allProducts;
         renderCategories();
         renderCatalog(filteredProducts);
+      });
+
+      document.addEventListener('click', function (event) {
+        const dropdown = document.getElementById('categoryDropdown');
+        if (!dropdown.contains(event.target)) {
+          dropdown.classList.remove('show');
+        }
       });
   </script>
 </body>
