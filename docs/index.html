@@ -223,6 +223,12 @@
         if (src && src.startsWith('http')) images.push(src);
       }
 
+      const videoID = extractYouTubeID(product.video1);
+      if (videoID) {
+        const videoThumb = `https://img.youtube.com/vi/${videoID}/0.jpg`;
+        images.push(videoThumb);
+      }
+
       let current = 0;
       function updateSlider(n) {
         current = (n + images.length) % images.length;
@@ -246,7 +252,16 @@
         const thumb = document.createElement('img');
         thumb.src = src;
         if (i === 0) thumb.classList.add('active');
-        thumb.onclick = () => updateSlider(i);
+        if (i === images.length - 1 && videoID) {
+          thumb.style.position = 'relative';
+          thumb.style.border = '2px solid red';
+          thumb.title = 'Video';
+          thumb.onclick = () => {
+            window.open(`https://www.youtube.com/watch?v=${videoID}`, '_blank');
+          };
+        } else {
+          thumb.onclick = () => updateSlider(i);
+        }
         thumbs.appendChild(thumb);
       });
 
@@ -272,6 +287,7 @@
         const title = document.createElement('h2');
         title.textContent = product.urun;
         card.appendChild(title);
+        
 
         [
           ['Stok Kodu', product.stok_kodu],
@@ -349,6 +365,13 @@
           dropdown.classList.remove('show');
         }
       });
+
+  function extractYouTubeID(url) {
+      if (!url) return '';
+      const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+      const match = url.match(regex);
+      return match ? match[1] : '';
+  }    
   </script>
 </body>
 </html>
