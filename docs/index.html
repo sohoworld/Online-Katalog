@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ürün Katalog</title>
+  <title>Ürün Kataloğu</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 2rem; }
@@ -15,105 +15,53 @@
       margin-bottom: 2rem;
       flex-wrap: wrap;
     }
-    h1 {
-      font-size: 2.5rem;
-      white-space: nowrap;
-    }
+    h1 { font-size: 2.5rem; white-space: nowrap; }
     #search {
-      padding: 0.5rem;
-      width: 100%;
-      max-width: 400px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      flex-shrink: 0;
+      padding: 0.5rem; width: 100%; max-width: 400px;
+      border: 1px solid #ccc; border-radius: 5px; flex-shrink: 0;
     }
-    #stock-buttons {
-      display: flex;
-      gap: 0.5rem;
-    }
+    #stock-buttons { display: flex; gap: 0.5rem; }
     .stock-btn {
-      padding: 8px 16px;
-      border: none;
-      background: #010603;
-      color: rgb(244, 244, 244);
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 0.9rem;
+      padding: 8px 16px; border: none; background: #010603; color: #f4f4f4;
+      border-radius: 20px; cursor: pointer; font-size: 0.9rem;
     }
-    .stock-btn.active {
-      background: #4caf50;
-    }
+    .stock-btn.active { background: #4caf50; }
 
-    /* Yeni dropdown yapısı */
-    .dropdown {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 2rem;
-    }
+    .dropdown { position: relative; display: inline-block; margin-bottom: 2rem; }
     .category-main-btn {
-      padding: 10px 20px;
-      background-color: #e91e63;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: bold;
+      padding: 10px 20px; background-color: #e91e63; color: white;
+      border: none; border-radius: 20px; cursor: pointer; font-weight: bold;
     }
     .dropdown-content {
-      display: none;
-      position: absolute;
-      z-index: 1000;
-      background-color: white;
-      border: 1px solid #ccc;
-      padding: 1rem;
-      width: 700px;
-      max-height: 500px;
-      overflow-y: auto;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      border-radius: 10px;
-      top: 110%;
-      left: 0;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.5rem 1rem;
+      display: none; position: absolute; z-index: 1000; background-color: white;
+      border: 1px solid #ccc; padding: 1rem; width: 700px; max-height: 500px;
+      overflow-y: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 10px;
+      top: 110%; left: 0; grid-template-columns: repeat(3, 1fr); gap: 0.5rem 1rem;
     }
-    .dropdown.show .dropdown-content {
-      display: grid;
-    }
+    .dropdown.show .dropdown-content { display: grid; }
     .dropdown-content button {
-      background: #444;
-      color: white;
-      padding: 0.5rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+      background: #444; color: white; padding: 0.5rem;
+      border: none; border-radius: 5px; cursor: pointer;
     }
 
-    .catalog {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-    }
+    .catalog { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
     .product {
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
+      background: white; padding: 1rem; border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
     }
-    .product:hover {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      transform: scale(1.01);
-    }
+    .product:hover { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); transform: scale(1.01); }
     .slider-container { position: relative; width: 100%; overflow: hidden; margin-bottom: 0.5rem; }
     .slider-main { width: 100%; height: 240px; display: flex; align-items: center; justify-content: center; position: relative; }
     .slider-main img { max-height: 100%; max-width: 100%; object-fit: contain; border-radius: 8px; cursor: pointer; }
     .slider-thumbs { display: flex; gap: 5px; margin-top: 0.5rem; overflow-x: auto; justify-content: center; }
     .slider-thumbs img { height: 50px; cursor: pointer; opacity: 0.6; border: 2px solid transparent; border-radius: 4px; }
     .slider-thumbs img.active { opacity: 1; border-color: #444; }
-    .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); border: none; color: white; font-size: 1.5rem; padding: 0.5rem 1rem; cursor: pointer; z-index: 1; }
+    .slider-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,0.5); border: none; color: white;
+      font-size: 1.5rem; padding: 0.5rem 1rem; cursor: pointer; z-index: 1;
+    }
     .slider-btn.left { left: 5px; }
     .slider-btn.right { right: 5px; }
     .product h2 { font-size: 1rem; margin-bottom: 0.5rem; }
@@ -121,11 +69,21 @@
     #pagination { text-align: center; margin-top: 2rem; }
     .page-btn { margin: 0 5px; padding: 5px 10px; background: #444; color: white; border: none; border-radius: 4px; cursor: pointer; }
     .page-btn:hover { background: #666; }
-    .modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 9999; flex-direction: column; }
+    .modal {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.8); display: none; align-items: center;
+      justify-content: center; z-index: 9999; flex-direction: column;
+    }
     .modal.active { display: flex; }
     .modal img { max-width: 90vw; max-height: 80vh; border-radius: 10px; }
-    .modal-close { position: absolute; top: 20px; right: 30px; font-size: 2rem; color: white; cursor: pointer; background: none; border: none; }
-    .modal-nav { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 2rem; background: none; border: none; cursor: pointer; padding: 1rem; }
+    .modal-close {
+      position: absolute; top: 20px; right: 30px; font-size: 2rem; color: white;
+      cursor: pointer; background: none; border: none;
+    }
+    .modal-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      color: white; font-size: 2rem; background: none; border: none; cursor: pointer; padding: 1rem;
+    }
     .modal-prev { left: 10px; }
     .modal-next { right: 10px; }
     @media screen and (max-width: 1024px) { .catalog { grid-template-columns: repeat(3, 1fr); } }
@@ -142,18 +100,22 @@
       <button class="stock-btn" id="outOfStockBtn">Tükenenler</button>
     </div>
   </header>
+
   <div class="dropdown" id="categoryDropdown">
     <button id="categoryToggle" class="category-main-btn">Tüm Kategoriler</button>
     <div id="categoryList" class="dropdown-content"></div>
   </div>
+
   <section id="catalog" class="catalog"></section>
   <div id="pagination"></div>
+
   <div class="modal" id="imageModal">
     <button class="modal-close" onclick="closeModal()">&times;</button>
     <button class="modal-nav modal-prev" onclick="navigateModal(-1)">&#10094;</button>
     <img id="modalImage" src="" alt="">
     <button class="modal-nav modal-next" onclick="navigateModal(1)">&#10095;</button>
   </div>
+
   <script>
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vThFHz2BFY--8dtLjgBwQQb02qHt2lIHPbyKoNgxcap2B910OO-pn68SG9XKBFwWxZkQBCeN_EeEoRi/pub?output=csv';
     let allProducts = [], filteredProducts = [], currentPage = 1, selectedCategory = 'Tümü';
@@ -176,15 +138,76 @@
       document.getElementById('modalImage').src = modalImages[modalCurrent];
     }
 
+    /* --- CSV PARSE: tırnak/virgül güvenli --- */
+    function parseCSV(csv) {
+      const rows = [];
+      let i = 0, field = '', row = [], inQuotes = false;
+
+      while (i < csv.length) {
+        const c = csv[i];
+        if (inQuotes) {
+          if (c === '"') {
+            if (csv[i + 1] === '"') { field += '"'; i += 2; continue; } // kaçışlı çift tırnak
+            inQuotes = false; i++; continue;
+          } else { field += c; i++; continue; }
+        } else {
+          if (c === '"') { inQuotes = true; i++; continue; }
+          if (c === ',') { row.push(field.trim()); field = ''; i++; continue; }
+          if (c === '\n' || c === '\r') {
+            if (field.length || row.length) { row.push(field.trim()); rows.push(row); }
+            while (csv[i] === '\n' || csv[i] === '\r') i++; // CRLF temizle
+            field = ''; row = [];
+            continue;
+          }
+          field += c; i++;
+        }
+      }
+      if (field.length || row.length) { row.push(field.trim()); rows.push(row); }
+      return rows;
+    }
+
     function csvToJson(csv) {
-      const [headerLine, ...lines] = csv.split("\n");
-      const headers = headerLine.split(',').map(h => h.trim());
-      return lines.filter(l => l.trim() !== '').map(line => {
-        const values = line.split(',');
-        const entry = {};
-        headers.forEach((h, i) => entry[h] = values[i]?.trim() || '');
-        return entry;
+      const rows = parseCSV(csv);
+      if (!rows.length) return [];
+      const headers = rows[0].map(h => h.trim());
+      return rows.slice(1).filter(r => r.some(x => x && x.trim() !== '')).map(values => {
+        const obj = {};
+        headers.forEach((h, idx) => obj[h] = (values[idx] ?? '').trim());
+        return normalizeRow(obj);
       });
+    }
+
+    /* --- ALIAS / DÖNÜŞÜM: ic_adet -> boyut, fiyat kaldır, yeni başlık toleransı --- */
+    function normalizeRow(row) {
+      // ic_adet -> boyut (eski veri otomatik devralsın)
+      if (!row.boyut && row.ic_adet) row.boyut = row.ic_adet;
+
+      // Perakende ↔ Parekende yazım farklarına tolerans
+      row['Parekende Fiyat'] = row['Parekende Fiyat']
+        || row['Perakende Fiyat']
+        || row['Perakende fiyat']
+        || row['perakende_fiyat']
+        || row['parekende_fiyat']
+        || '';
+
+      // Toptan (50)
+      row['Toptan Alım Fiyat (50 adet)'] = row['Toptan Alım Fiyat (50 adet)']
+        || row['Toptan 50']
+        || row['Toptan Fiyat 50']
+        || row['toptan_50']
+        || '';
+
+      // Toptan (100)
+      row['Toptan Alım Fiyat (100 adet)'] = row['Toptan Alım Fiyat (100 adet)']
+        || row['Toptan 100']
+        || row['Toptan Fiyat 100']
+        || row['toptan_100']
+        || '';
+
+      // fiyat tamamen kullanılmıyor
+      delete row.fiyat;
+
+      return row;
     }
 
     function renderCategories() {
@@ -287,18 +310,19 @@
         const title = document.createElement('h2');
         title.textContent = product.urun;
         card.appendChild(title);
-        
 
         [
           ['Stok Kodu', product.stok_kodu],
           ['Barkod', product.barkod],
-          ['Fiyat', `${product.fiyat}`],
           ['Koli & Paket', product.paket_turu],
-          ['İç Adet', product.ic_adet],
+          ['Boyut', product.boyut], // ic_adet yerine
+          ['Parekende Fiyat', product['Parekende Fiyat']],
+          ['Toptan Alım Fiyat (50 adet)', product['Toptan Alım Fiyat (50 adet)']],
+          ['Toptan Alım Fiyat (100 adet)', product['Toptan Alım Fiyat (100 adet)']],
           ['Stok', product.adet]
         ].forEach(([label, value]) => {
           const p = document.createElement('p');
-          p.innerHTML = `<strong>${label}:</strong> ${value}`;
+          p.innerHTML = `<strong>${label}:</strong> ${value ?? ''}`;
           card.appendChild(p);
         });
 
@@ -329,7 +353,9 @@
       filteredProducts = allProducts.filter(p => {
         const matchQuery = [p.urun, p.stok_kodu, p.barkod].some(f => f?.toLowerCase().includes(q));
         const matchCat = selectedCategory === 'Tümü' || p.kategori === selectedCategory;
-        const matchStock = stockFilter === 'all' || (stockFilter === 'in' && Number(p.adet || 0) > 0) || (stockFilter === 'out' && Number(p.adet || 0) <= 0);
+        const matchStock = stockFilter === 'all'
+          || (stockFilter === 'in' && Number(p.adet || 0) > 0)
+          || (stockFilter === 'out' && Number(p.adet || 0) <= 0);
         return matchQuery && matchCat && matchStock;
       });
       currentPage = 1;
@@ -359,19 +385,17 @@
         renderCatalog(filteredProducts);
       });
 
-      document.addEventListener('click', function (event) {
-        const dropdown = document.getElementById('categoryDropdown');
-        if (!dropdown.contains(event.target)) {
-          dropdown.classList.remove('show');
-        }
-      });
+    document.addEventListener('click', function (event) {
+      const dropdown = document.getElementById('categoryDropdown');
+      if (!dropdown.contains(event.target)) dropdown.classList.remove('show');
+    });
 
-  function extractYouTubeID(url) {
+    function extractYouTubeID(url) {
       if (!url) return '';
       const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
       const match = url.match(regex);
       return match ? match[1] : '';
-  }    
+    }
   </script>
 </body>
 </html>
