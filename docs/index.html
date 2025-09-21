@@ -177,7 +177,7 @@
       });
     }
 
-    /* --- ALIAS / DÖNÜŞÜM: ic_adet -> boyut, fiyat kaldır, yeni başlık toleransı --- */
+    /* --- ALIAS / DÖNÜŞÜM: ic_adet -> boyut, fiyat kaldır, başlık toleransı + YENİ SÜTUNLAR --- */
     function normalizeRow(row) {
       // ic_adet -> boyut (eski veri otomatik devralsın)
       if (!row.boyut && row.ic_adet) row.boyut = row.ic_adet;
@@ -202,6 +202,20 @@
         || row['Toptan 100']
         || row['Toptan Fiyat 100']
         || row['toptan_100']
+        || '';
+
+      // YENİ: Tedarikçi & Tedarikçi Ürün Kodu alias (farklı yazımlara tolerans)
+      row['Tedarikçi'] = row['Tedarikçi']
+        || row['Tedarikci']
+        || row['tedarikçi']
+        || row['tedarikci']
+        || '';
+
+      row['Tedarikçi Ürün Kodu'] = row['Tedarikçi Ürün Kodu']
+        || row['Tedarikci Urun Kodu']
+        || row['Tedarikci Ürün Kodu']
+        || row['tedarikci_urun_kodu']
+        || row['tedarikçi ürün kodu']
         || '';
 
       // fiyat tamamen kullanılmıyor
@@ -316,6 +330,11 @@
           ['Barkod', product.barkod],
           ['Koli & Paket', product.paket_turu],
           ['Boyut', product.boyut], // ic_adet yerine
+
+          // YENİ İKİ ALAN — hücre içerikleri aynen gösterilir
+          ['Tedarikçi', product['Tedarikçi']],
+          ['Tedarikçi Ürün Kodu', product['Tedarikçi Ürün Kodu']],
+
           ['Parekende Fiyat', product['Parekende Fiyat']],
           ['Toptan Alım Fiyat (50 adet)', product['Toptan Alım Fiyat (50 adet)']],
           ['Toptan Alım Fiyat (100 adet)', product['Toptan Alım Fiyat (100 adet)']],
@@ -376,7 +395,7 @@
       filterAndRender();
     });
 
-    fetch(csvUrl)
+    fetch(csvUrl + '&rand=' + Date.now()) // cache-buster
       .then(res => res.text())
       .then(text => {
         allProducts = csvToJson(text);
